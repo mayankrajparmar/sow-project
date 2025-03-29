@@ -1,5 +1,6 @@
 import { Community } from "@/utils/type";
 import React from "react";
+import Image from "next/image";
 
 const CommunityGrid = ({
   communities,
@@ -31,13 +32,17 @@ const CommunityGrid = ({
       {communities.map((community, index) => (
         <div
           key={index}
-          className="w-full max-w-[391px] mx-auto bg-white shadow-[17px_12px_60px_0px_rgba(0,0,0,0.25)] overflow-hidden"
+          className="w-full max-w-[391px] mx-auto bg-white shadow-[17px_12px_60px_0px_rgba(0,0,0,0.25)] overflow-hidden rounded-lg"
         >
-          <img
-            src={community.image}
-            alt={community.title}
-            className="w-full h-[200px] sm:h-[250px] lg:h-[292px] object-cover"
-          />
+          <div className="relative w-full h-[200px] sm:h-[250px] lg:h-[292px]">
+            <Image
+              src={community.image}
+              alt={community.title}
+              layout="fill"
+              objectFit="cover"
+              className="rounded-t-lg"
+            />
+          </div>
           <div className="w-full h-auto bg-[#FFFFFF]">
             <div className="px-4 sm:px-6 py-4 sm:py-[33px]">
               <p className="text-[#887C68] font-sans font-normal text-[14px] sm:text-[16px] leading-5">

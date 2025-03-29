@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from "react";
 import CommunityGrid from "@/components/CommunityGrid";
 import Carousel from "@/components/Carousel";
+import { ApiResponse, Community } from "@/utils/type";
 
 const HomePage = () => {
-  const [communities, setCommunities] = useState([]);
+  const [communities, setCommunities] = useState<Community[]>([]);
+
   const fetchData = async () => {
     try {
       const response = await fetch("/api/communities");
       if (!response.ok)
         throw new Error(`HTTP error! Status: ${response.status}`);
 
-      const result = await response.json();
+      const result: ApiResponse = await response.json();
       // console.log("Fetched Data:", result);
 
       if (result.success && Array.isArray(result.data)) {
-        const formattedData = result.data.map(
-          (item: { post_title: any; post_excerpt: any; image_url: any }) => ({
-            title: item.post_title || "No Title",
-            description: item.post_excerpt || "No Description",
-            image: item.image_url || "/placeholder.jpg",
-          })
-        );
+        const formattedData: Community[] = result.data.map((item) => ({
+          title: item.post_title || "No Title",
+          description: item.post_excerpt || "No Description",
+          image: item.image_url || "/placeholder.jpg",
+        }));
         setCommunities(formattedData);
       } else {
         // console.error("Invalid Data Format:", result);

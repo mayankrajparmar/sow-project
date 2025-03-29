@@ -1,40 +1,41 @@
-import React from "react";
-import Slider from "react-slick";
+import React, { useEffect, useState } from "react";
+import Slider, { Settings } from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { Community } from "@/utils/type";
+import { ArrowProps, Community } from "@/utils/type";
+import Image from "next/image";
 
+const NextArrow: React.FC<ArrowProps> = ({ onClick }) => (
+  <button
+    onClick={onClick}
+    className="absolute right-[-1px] top-1/2 transform -translate-y-1/2 bg-white p-3 shadow-xl z-10"
+  >
+    <FaChevronRight className="text-gray-600" />
+  </button>
+);
 
+const PrevArrow: React.FC<ArrowProps> = ({ onClick }) => (
+  <button
+    onClick={onClick}
+    className="absolute left-[16px] top-1/2 transform -translate-y-1/2 bg-white p-3 shadow-xl z-10"
+  >
+    <FaChevronLeft className="text-gray-600" />
+  </button>
+);
 
-// Custom arrow components
-const NextArrow = (props: any) => {
-  const { onClick } = props;
-  return (
-    <button
-      onClick={onClick}
-      className="absolute right-[-1px] top-1/2 transform -translate-y-1/2 bg-white p-3 shadow-xl  z-10"
-    >
-      <FaChevronRight className="text-gray-600" />
-    </button>
-  );
-};
+const Carousel: React.FC<{ communities: Community[] }> = ({ communities }) => {
+  const [showArrows, setShowArrows] = useState(true);
 
-const PrevArrow = (props: any) => {
-  const { onClick } = props;
-  return (
-    <button
-      onClick={onClick}
-      className="absolute left-[2px] top-1/2 transform -translate-y-1/2 bg-white p-3 shadow-xl  z-10"
-    >
-      <FaChevronLeft className="text-gray-600" />
-    </button>
-  );
-};
+  useEffect(() => {
+    // Check screen width and hide arrows if below 468px
+    const checkScreenSize = () => setShowArrows(window.innerWidth > 468);
+    checkScreenSize(); // Initial check
+    window.addEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
 
-const Carousel = ({ communities }: { communities: Community[] }) => {
   if (!Array.isArray(communities) || communities.length === 0) {
-    // Shimmer UI
     return (
       <div className="flex gap-6 overflow-hidden">
         {Array.from({ length: 3 }).map((_, index) => (
@@ -47,52 +48,48 @@ const Carousel = ({ communities }: { communities: Community[] }) => {
     );
   }
 
-  const settings = {
+  const settings: Settings = {
     infinite: true,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
+    nextArrow: showArrows ? <NextArrow /> : undefined, // ✅ Hide arrows if screen < 468px
+    prevArrow: showArrows ? <PrevArrow /> : undefined, // ✅ Hide arrows if screen < 468px
     responsive: [
       {
         breakpoint: 1024,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-        },
+        settings: { slidesToShow: 2, slidesToScroll: 1 },
       },
       {
         breakpoint: 768,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
+        settings: { slidesToShow: 2, slidesToScroll: 1 },
+      },
+      {
+        breakpoint: 468,
+        settings: { slidesToShow: 1.1, slidesToScroll: 1 },
       },
     ],
   };
 
   return (
     <div className="relative">
-      <div>
-        <Slider {...settings}>
-          {communities.map((community, index) => (
-            <div
-              key={index}
-              className="relative w-[250px] sm:w-[300px] md:w-[350px] lg:w-[391px] h-[400px] sm:h-[450px] md:h-[500px] lg:h-[550px] overflow-hidden px-4 sm:px-6"
-            >
-              <img
+      <Slider {...settings} className="slick-slider">
+        {communities.map((community, index) => (
+          <div key={index} className="px-6 sm:px-10">
+            <div className="relative w-[300px] sm:w-[300px] md:w-[350px] lg:w-[391px] h-[400px] sm:h-[450px] md:h-[500px] lg:h-[550px] overflow-hidden">
+              <Image
                 src={community.image}
                 alt={community.title}
-                className="w-full h-full object-cover"
+                layout="fill"
+                objectFit="cover"
               />
-              <div className="absolute bottom-0  w-full py-4 text-[28px] font-sans font-semibold text-white text-center">
+              <div className="absolute bottom-0 w-full py-4 text-[20px] sm:text-[24px] font-sans font-semibold text-white text-center bg-gradient-to-t from-black/70 to-transparent">
                 {community.title.toUpperCase()}
               </div>
             </div>
-          ))}
-        </Slider>
-      </div>
+          </div>
+        ))}
+      </Slider>
     </div>
   );
 };
