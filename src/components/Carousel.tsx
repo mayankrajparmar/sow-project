@@ -76,7 +76,7 @@ const Carousel: React.FC<{ communities: Community[] }> = ({ communities }) => {
       <Slider {...settings} className="slick-slider">
         {communities.map((community, index) => (
           <div key={index} className="px-6 sm:px-10">
-            <div className="relative w-[300px] sm:w-[300px] md:w-[350px] lg:w-[391px] h-[400px] sm:h-[450px] md:h-[500px] lg:h-[550px] overflow-hidden">
+            <div className="relative w-[290px] sm:w-[300px] md:w-[350px] lg:w-[391px] h-[400px] sm:h-[450px] md:h-[500px] lg:h-[550px] overflow-hidden">
               <Image
                 src={community.image}
                 alt={community.title}
