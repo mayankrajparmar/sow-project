@@ -14,7 +14,7 @@ const CommunityGrid = ({
         {Array.from({ length: 6 }).map((_, index) => (
           <div
             key={index}
-            className="w-full max-w-[391px] mx-auto bg-gray-200 animate-pulse shadow-[17px_12px_60px_0px_rgba(0,0,0,0.25)] overflow-hidden rounded-lg"
+            className="w-full max-w-[391px] mx-auto bg-gray-200 animate-pulse shadow-[17px_12px_60px_0px_rgba(0,0,0,0.25)] overflow-hidden "
           >
             <div className="w-full h-[200px] sm:h-[250px] lg:h-[292px] bg-gray-300"></div>
             <div className="w-full h-auto bg-gray-200 p-4 sm:p-6">
@@ -32,7 +32,7 @@ const CommunityGrid = ({
       {communities.map((community, index) => (
         <div
           key={index}
-          className="w-full max-w-[391px] mx-auto bg-white shadow-[17px_12px_60px_0px_rgba(0,0,0,0.25)] overflow-hidden rounded-lg"
+          className="w-full max-w-[391px] mx-auto bg-white shadow-[17px_12px_60px_0px_rgba(0,0,0,0.25)] overflow-hidden "
         >
           <div className="relative w-full h-[200px] sm:h-[250px] lg:h-[292px]">
             <Image
@@ -40,7 +40,6 @@ const CommunityGrid = ({
               alt={community.title}
               layout="fill"
               objectFit="cover"
-              className="rounded-t-lg"
             />
           </div>
           <div className="w-full h-auto bg-[#FFFFFF]">
